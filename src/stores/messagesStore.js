@@ -2,6 +2,12 @@ import { observable } from "mobx";
 
 class MessagesStore {
 	@observable messages = [];
+	@observable comment = '';
+	account = {
+		id: 1,
+		name: 'Takashi',
+		icon: 'https://image.flaticon.com/teams/slug/freepik.jpg',
+	};
 
 	fetch() {
 	  this.messages = [
@@ -23,6 +29,27 @@ class MessagesStore {
 	    },
 	  ];
 	}
+
+	input(comment) {
+		this.comment = comment
+	}
+
+	send(comment) {
+		// serverにリクエスト飛ばす
+		const now = new Date();
+		this.messages.push(
+			{
+				id: this.messages[this.messages.length - 1].id + 1,
+				sender_id: this.account.id,
+				sender_name: this.account.name,
+				sender_icon: this.account.icon,
+				text: comment,
+				datetime: now.toLocaleString(),
+			}
+		)
+		this.comment = '';
+	}
+
 }
 
 const messagesStore = new MessagesStore()

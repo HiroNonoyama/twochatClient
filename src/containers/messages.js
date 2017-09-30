@@ -32,9 +32,14 @@ class Messages extends Component {
 const styles = {
   container: {
     height: '100%',
+    width: window.screen.width / 3,
+    minWidth: 200,
+    marginRight: 'auto',
+    marginLeft: 'auto',
+    overflow: 'auto',
   },
   messageWrapper: {
-    marginBottom: 40,
+    paddingBottom: 20,
   }
 }
 

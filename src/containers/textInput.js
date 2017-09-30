@@ -1,17 +1,32 @@
 import React, { Component } from 'react';
+import { inject, observer } from 'mobx-react';
 
-// connect to comment store
+@inject('messagesStore') @observer
 class TextInput extends Component {
   _handleKeyPress(e) {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      console.log('送信'); // send message & delete \n
+    const messageStore = this.props.messagesStore;
+    if (e.key === 'Enter' && !e.shiftKey && messageStore.comment.match(/..*/)) {
+      messageStore.send(messageStore.comment);
     }
+  }
+
+  _handleInput() {
+    const text = this.refs.textarea.value;
+    if (text.substring(0, 2) !== '\n')
+      this.props.messagesStore.input(text);
   }
 
 　render() {
     return (
       <div style={styles.textInputContaienr}>
-        <textarea type='text' style={styles.textArea} onKeyPress={this._handleKeyPress} value={'assdfa'} />  // store into value
+        <textarea
+          type='text'
+          ref='textarea'
+          style={styles.textArea}
+          onKeyPress={this._handleKeyPress.bind(this)}
+          value={this.props.messagesStore.comment}
+          onChange={this._handleInput.bind(this)}
+        />
       </div>
     )
   }
@@ -23,10 +38,13 @@ const styles = {
     borderWidth: 1,
     borderRadius: 5,
     width: window.screen.width / 3,
+    minWidth: 198,
     height: 85,
     marginLeft: 'auto',
     marginRight: 'auto',
     padding: 5,
+    zIndex: 100,
+    backgroundColor: 'white',
   },
   textArea: {
     margin: 0,
