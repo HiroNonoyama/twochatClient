@@ -9,19 +9,33 @@ class Messages extends Component {
   	this.props.messagesStore.fetch();
   }
 
-	render() {
-		if (this.props.messagesStore.messages.length !== 0) {
-			return (
-				this.props.messagesStore.messages.map(message => {
-		  	  return <Message message={message} key={message.id} />
-				})
-			)
-		} else {
-			return (
-				<div>メッセージはありません</div>
-			)
-		}
-	}
+  render() {
+    const messages = this.props.messagesStore.messages;
+    return (
+      <div style={styles.container}>
+        {
+          messages.length === 0 ?
+              <p>メッセージはありません</p> :
+            messages.map(message => {
+              return (
+                <div style={styles.messageWrapper} key={message.id}>
+                  <Message message={message} key={message.id} />
+                </div>
+              )
+            })
+        }
+      </div>
+    );
+  }
+}
+
+const styles = {
+  container: {
+    height: '100%',
+  },
+  messageWrapper: {
+    marginBottom: 40,
+  }
 }
 
 

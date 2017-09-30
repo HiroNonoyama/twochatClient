@@ -1,12 +1,12 @@
 import React from 'react';
 
 export default function Message(props) {
-  
+
 
   return (
   	<div style={style.container}>
   		<div style={style.imageWrapper}>
-  			<img src={require('../images/icon1.jpg')} style={style.iconImage} />
+  			<img src={props.message.sender_icon} style={style.iconImage} />
   		</div>
   		<div style={style.textWrapper}>
   		  <p style={style.text}>{props.message.text}</p>
