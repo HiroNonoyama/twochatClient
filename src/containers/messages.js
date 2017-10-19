@@ -17,9 +17,10 @@ class Messages extends Component {
           messages.length === 0 ?
               <p>メッセージはありません</p> :
             messages.map(message => {
+              console.log(message);
               return (
-                <div style={styles.messageWrapper} key={message.id}>
-                  <Message message={message} key={message.id} />
+                <div style={styles.messageWrapper} key={message.Id}>
+                  <Message message={message} key={message.Id} />
                 </div>
               )
             })

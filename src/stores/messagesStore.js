@@ -1,4 +1,5 @@
 import { observable } from "mobx";
+import axios from "axios";
 
 class MessagesStore {
 	@observable messages = [];
@@ -10,24 +11,11 @@ class MessagesStore {
 	};
 
 	fetch() {
-	  this.messages = [
-	    {
-	    	id: 1,
-	    	sender_id: 1,
-	    	sender_name: 'Takashi',
-				sender_icon: 'https://image.flaticon.com/teams/slug/freepik.jpg',
-	    	text: 'Hello world\nby the way, do you like hello world?',
-	    	datetime: "2017/9/28 19:10:19",
-	    },
-	    {
-	    	id: 2,
-	    	sender_id: 2,
-	    	sender_name: 'Naoya',
-				sender_icon: 'http://images.all-free-download.com/images/graphiclarge/harry_potter_icon_6825007.jpg',
-	    	text: 'Hello world, too',
-	    	datetime: "2017/9/28 19:13:19",
-	    },
-	  ];
+		axios.get('http://192.168.3.23:8080/messages')
+			.then(res => {
+				this.messages = res.data;
+			})
+			.catch(err => console.log(err))
 	}
 
 	input(comment) {
@@ -37,16 +25,23 @@ class MessagesStore {
 	send(comment) {
 		// serverにリクエスト飛ばす
 		const now = new Date();
-		this.messages.push(
-			{
-				id: this.messages[this.messages.length - 1].id + 1,
-				sender_id: this.account.id,
-				sender_name: this.account.name,
-				sender_icon: this.account.icon,
-				text: comment,
-				datetime: now.toLocaleString(),
-			}
-		)
+		const newMessage = {
+			Id: this.messages[this.messages.length - 1].Id + 1,
+			Name: this.account.name,
+			IconImage: this.account.icon,
+			Message: comment,
+			CreatedAt: now.toLocaleString(),
+		}
+		this.messages.push(newMessage)
+		axios.post('http://192.168.3.23:8080/messages', {
+			id: newMessage.Id,
+			sender: this.account.id,
+			message: newMessage.Message,
+			datetime: newMessage.CreatedAt,
+		})
+			.then(res => console.log(res))
+			.catch(err => console.log(err));
+
 		this.comment = '';
 	}
 
