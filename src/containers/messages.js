@@ -13,11 +13,11 @@ class Messages extends Component {
     const messages = this.props.messagesStore.messages;
     return (
       <div style={styles.container}>
+        <p>{this.props.messagesStore.connection ? 'CONNECT' : 'DISCONNECT'}</p>
         {
           messages.length === 0 ?
               <p>メッセージはありません</p> :
             messages.map(message => {
-              console.log(message);
               return (
                 <div style={styles.messageWrapper} key={message.Id}>
                   <Message message={message} key={message.Id} />

@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function Message(props) {
 
-  const dateObj = new Date(props.message.CreatedAt);
+  const dateObj = new Date(props.message.Datetime);
 	let displayedDatetime = `${dateObj.getMonth() + 1}/${dateObj.getDate()} ${dateObj.getHours()}:${dateObj.getMinutes()}`;
 
 	const newLinedText = props.message.Message.split('\n').map((line, index) => <p style={style.text} key={index}>{line}</p>)
