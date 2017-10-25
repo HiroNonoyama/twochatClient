@@ -1,18 +1,47 @@
 import { observable } from "mobx";
 import axios from "axios";
+import  SHA256 from "crypto-js/sha256";
 
 class MessagesStore {
+	@observable isLogin = document.cookie ? true : false;
 	@observable messages = [];
 	@observable comment = '';
 	@observable connection = false;
-	account = {
-		id: 1,
-		name: 'Takashi',
-		icon: 'https://image.flaticon.com/teams/slug/freepik.jpg',
-	};
+	@observable account = document.cookie ? this.withdrawFromCookie(document.cookie) : {};
+	
+	withdrawFromCookie(cookieStr) {
+		const cookieArr = cookieStr.split(',');
+		return {
+			id: Number(cookieArr[0].split('=')[1]),
+			name: cookieArr[1].split('=')[1],
+			icon: cookieArr[2].split('=')[1],
+		}
+	}
+
+	login(username, password) {
+		const cryptedPass = SHA256(password).words.join();
+		const obj = { username, password: String(cryptedPass) };
+		axios.post('http://192.168.3.23:8080/login', JSON.stringify(obj))
+			.then(res =>{
+				if (res.data) {
+					this.account = {
+						id: Number(res.data.Id),
+						name: res.data.Name,
+						icon: res.data.Icon,
+					};
+					this.isLogin = true;
+					if (navigator.cookieEnabled) {
+						document.cookie = 'id=' + res.data.Id + ',name=' + res.data.Name + ',icon=' + res.data.Icon;
+					}
+					this.fetch();
+					return;
+				}
+				alert('pass, username invalid')
+			})
+	}
 
 	fetch() {
-		axios.get('http://localhost:8080/messages')
+		axios.get('http://192.168.3.23:8080/messages')
 			.then(res => {
 				this.messages = res.data;
 				this.connectWs();
@@ -44,7 +73,7 @@ class MessagesStore {
 			Datetime: now.toLocaleString(),
 		}
 		// this.messages.push(newMessage)
-		axios.post('http://localhost:8080/messages', this.msgObj(newMessage))
+		axios.post('http://192.168.3.23:8080/messages', this.msgObj(newMessage))
 			.then(res => this.cast(res.data))
 			.catch(err => console.log(err));
 
@@ -54,14 +83,13 @@ class MessagesStore {
 	// ここら辺よく知る必要がある
 
 	connectWs() {
-		this.conn = new WebSocket("ws://localhost:8080/ws")
+		this.conn = new WebSocket("ws://192.168.3.23:8080/ws")
 		const conn = this.conn;
 		conn.onmessage = (e) => {
-			console.log(e.data)
-			if (e.data === '2') {
+			if (Number(e.data) >= 2) {
 				this.connection = true;
 				return
-			} else if (e.data === '1') {
+			} else if (Number(e.data) < 2) {
 				this.connection = false;
 				return
 			}

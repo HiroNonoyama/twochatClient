@@ -7,23 +7,42 @@ export default function Message(props) {
 
 	const newLinedText = props.message.Message.split('\n').map((line, index) => <p style={style.text} key={index}>{line}</p>)
 
-  return (
-  	<div style={style.container}>
-  		<div style={style.imageWrapper}>
-  			<img src={props.message.IconImage} style={style.iconImage} alt={'icon'} />
-        <p style={style.datetime}>{displayedDatetime}</p>
-  		</div>
-  		<div style={style.textWrapper}>
-  		  {newLinedText}
-  		</div>
-  	</div>
-  )
+	if (props.accountId !== props.message.SenderId) {
+		return (
+			<div style={style.receiveContainer}>
+				<div style={style.imageWrapper}>
+					<img src={props.message.Icon} style={style.iconImage} alt={'icon'} />
+					<p style={style.datetime}>{displayedDatetime}</p>
+				</div>
+				<div style={style.receiveTextWrapper}>
+					{newLinedText}
+				</div>
+			</div>
+		)
+	}
+	return (
+		<div style={style.postContainer}>
+			<div style={style.imageWrapper}>
+				<img src={props.message.Icon} style={style.iconImage} alt={'icon'} />
+				<p style={style.datetime}>{displayedDatetime}</p>
+			</div>
+			<div style={style.postTextWrapper}>
+				{newLinedText}
+			</div>
+		</div>
+	)
 }
 
+const windowWidth = window.innerWidth - 80;
+
 const style = {
-	container: {
+	receiveContainer: {
 		display: 'flex',
 		flexDirection: 'row',
+	},
+	postContainer: {
+		display: 'flex',
+		flexDirection: 'row-reverse',
 	},
 	imageWrapper: {
 		flex: 1,
@@ -35,15 +54,24 @@ const style = {
 		width: 30,
 		borderRadius: 10,
 	},
-	textWrapper: {
+	receiveTextWrapper: {
 		flex: 6,
 		justifyContent: 'center',
+		marginTop: 5,
+	},
+	postTextWrapper: {
+		flex: 6,
+		justifyContent: 'center',
+		textAlign: 'right',
 		marginTop: 5,
 	},
 	text: {
 		fontSize: 15,
 		margin: 0,
+		width: windowWidth,
 		paddingLeft: 10,
+		paddingRight: 10,
+		wordWrap: 'break-word',
 	},
   datetime: {
     fontSize: 5,
