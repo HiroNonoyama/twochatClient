@@ -50,9 +50,9 @@ const style = {
 		marginTop: '0',
 	},
 	iconImage: {
-		height: 30,
-		width: 30,
-		borderRadius: 10,
+		height: 36,
+		width: 36,
+		borderRadius: 18,
 	},
 	receiveTextWrapper: {
 		flex: 6,
@@ -74,7 +74,7 @@ const style = {
 		wordWrap: 'break-word',
 	},
   datetime: {
-    fontSize: 5,
+    fontSize: 8,
     marginTop: 0,
-  }
+  },
 }
