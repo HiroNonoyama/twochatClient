@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
-import { inject, observer } from 'mobx-react';
-import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
-import ActionSend from 'material-ui/svg-icons/content/send';
+import React, { Component } from "react";
+import { inject, observer } from "mobx-react";
+import TextField from "material-ui/TextField";
+import FlatButton from "material-ui/FlatButton";
+import ActionSend from "material-ui/svg-icons/content/send";
 
-@inject('messagesStore') @observer
+@inject("messagesStore")
+@observer
 class TextInput extends Component {
   // _handleKeyPress(e) {
   //   const messageStore = this.props.messagesStore;
@@ -22,19 +23,19 @@ class TextInput extends Component {
 
   _handleInput(e) {
     const text = e.target.value;
-    if (text.substring(0, 2) !== '\n') {
+    if (text.substring(0, 2) !== "\n") {
       this.props.messagesStore.input(text);
     }
   }
 
-　render() {
+  render() {
     if (this.props.messagesStore.isLogin) {
       return (
         <div style={styles.wrapper}>
           <div style={styles.textAreaWrapper}>
             <TextField
-              type='text'
-              ref='textarea'
+              type="text"
+              ref="textarea"
               id="text-field-controlled"
               style={styles.textArea}
               /* onKeyPress={this._handleKeyPress.bind(this)} */
@@ -53,39 +54,39 @@ class TextInput extends Component {
             />
           </div>
         </div>
-      )
+      );
     }
-    return null
+    return null;
   }
 }
 
 const styles = {
   wrapper: {
-    display: 'flex',
-    flexDirection: 'row',
+    display: "flex",
+    flexDirection: "row"
   },
   textAreaWrapper: {
     paddingTop: 7,
     paddingBottom: 7,
     flex: 5,
-    paddingLeft: 5,
+    paddingLeft: 5
   },
   buttonWrapper: {
     flex: 1,
     paddingRight: 5,
-    alignItems: 'center',
-    display: 'flex',
+    alignItems: "center",
+    display: "flex"
   },
   textArea: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 10,
     paddingLeft: 5,
-    paddingRight: 5,
+    paddingRight: 5
   },
   button: {
-    backgroundColor: 'white',
-    borderRadius: 10,
-  },
-}
+    backgroundColor: "white",
+    borderRadius: 10
+  }
+};
 
 export default TextInput;
