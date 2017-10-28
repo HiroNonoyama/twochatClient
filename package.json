@@ -19,7 +19,7 @@
     "build": "react-app-rewired build",
     "test": "react-app-rewired test --env=jsdom",
     "eject": "react-app-rewired eject",
-    "format": "prettier-eslint --write ./**/*.js"
+    "format": "prettier-eslint --write ./src/**/*.js ./src/*.js"
   },
   "devDependencies": {
     "babel-eslint": "^8.0.1",
