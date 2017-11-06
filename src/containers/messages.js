@@ -38,7 +38,7 @@ class Messages extends Component {
             right: 0,
             marginTop: 200,
             paddingRight: 10,
-            paddingLeft: 10
+            paddingLeft: 10,
           }}
         >
           <Paper zDepth={2}>
@@ -107,11 +107,11 @@ const styles = {
     left: 0,
     right: 0,
     overflow: "auto",
-    WebkitOverflowScrolling: "touch"
+    WebkitOverflowScrolling: "touch",
   },
   messageWrapper: {
-    padding: 20
-  }
+    padding: 20,
+  },
 };
 
 export default Messages;
